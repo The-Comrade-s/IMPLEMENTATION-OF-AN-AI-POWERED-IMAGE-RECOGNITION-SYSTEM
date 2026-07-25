@@ -40,14 +40,20 @@ logger = get_logger(__name__)
 
 
 def configure_page() -> None:
+    # The sidebar holds ALL post-login navigation (Dashboard, Image Recognition,
+    # History, Analytics, Settings, Logout, Admin pages). If it starts collapsed
+    # after login, users only see a tiny ">" arrow and have no obvious way to
+    # reach any feature — so we expand it automatically once authenticated, and
+    # keep it collapsed on the public landing/login/register pages where it's
+    # hidden entirely via CSS anyway.
+    is_authenticated = st.session_state.get("authenticated", False)
     st.set_page_config(
         page_title=settings.app_name,
         page_icon=settings.app_icon,
         layout="wide",
-        initial_sidebar_state="collapsed",
+        initial_sidebar_state="expanded" if is_authenticated else "collapsed",
     )
     load_css(settings.css_path)
-
 
 def init_session_state() -> None:
     defaults = {
