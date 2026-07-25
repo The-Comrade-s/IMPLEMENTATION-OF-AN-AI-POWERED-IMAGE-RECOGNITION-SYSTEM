@@ -87,10 +87,6 @@ ROUTES = {
 
 
 def render_authenticated_app() -> None:
-    st.markdown(
-        """<style>section[data-testid="stSidebar"] {visibility: visible;}</style>""",
-        unsafe_allow_html=True,
-    )
     selected = render_sidebar()
 
     if selected == "Logout":
@@ -114,10 +110,6 @@ def render_authenticated_app() -> None:
 
 
 def render_public_app() -> None:
-    st.markdown(
-        """<style>section[data-testid="stSidebar"] {display: none;}</style>""",
-        unsafe_allow_html=True,
-    )
     view = st.session_state.auth_view
     if view == "login":
         render_login()
