@@ -42,18 +42,20 @@ logger = get_logger(__name__)
 def configure_page() -> None:
     # The sidebar holds ALL post-login navigation (Dashboard, Image Recognition,
     # History, Analytics, Settings, Logout, Admin pages). If it starts collapsed
-    # after login, users only see a tiny ">" arrow and have no obvious way to
-    # reach any feature — so we expand it automatically once authenticated, and
-    # keep it collapsed on the public landing/login/register pages where it's
-    # hidden entirely via CSS anyway.
+    # after login, desktop users only see a tiny ">" arrow with no obvious way
+    # to reach any feature. "auto" solves that on desktop (it expands
+    # automatically on wide viewports) while still letting mobile use its
+    # normal, working hamburger-toggle behavior instead of a forced full-screen
+    # overlay, which is what "expanded" was doing on narrow screens.
     is_authenticated = st.session_state.get("authenticated", False)
     st.set_page_config(
         page_title=settings.app_name,
         page_icon=settings.app_icon,
         layout="wide",
-        initial_sidebar_state="expanded" if is_authenticated else "collapsed",
+        initial_sidebar_state="auto" if is_authenticated else "collapsed",
     )
     load_css(settings.css_path)
+
 
 def init_session_state() -> None:
     defaults = {
@@ -126,8 +128,8 @@ def render_public_app() -> None:
 
 
 def main() -> None:
-    configure_page()
     init_session_state()
+    configure_page()
 
     try:
         init_db()
