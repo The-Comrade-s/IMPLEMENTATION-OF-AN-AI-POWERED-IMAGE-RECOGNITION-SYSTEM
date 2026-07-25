@@ -17,7 +17,13 @@
     --airs-radius: 16px;
 }
 
-#MainMenu, footer, header {visibility: hidden;}
+/* Hide Streamlit's default "hamburger" menu and "Made with Streamlit" footer
+   for a cleaner, commercial look. Deliberately NOT hiding <header> itself —
+   it contains the sidebar's collapse/expand toggle button in current
+   Streamlit versions, and hiding it makes the sidebar unreachable. */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header[data-testid="stHeader"] {background: transparent;}
 
 .stApp {
     background: var(--airs-bg);
